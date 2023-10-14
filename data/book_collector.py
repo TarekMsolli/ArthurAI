@@ -1,6 +1,7 @@
 import os
 import requests
 import csv
+import re
 
 output_directory = "books"
 os.makedirs(output_directory, exist_ok=True)
@@ -45,7 +46,8 @@ def download_book(book_id):
         else:
             language = "Language not found"
 
-        output_filename = f"{book_id}#{title}#{author}#{language}.txt"
+        title_sanitized = re.sub(r'[\\/:"*?<>|]', '_', title)
+        output_filename = f"{book_id}#{title_sanitized}#{author}#{language}.txt"        
         output_path = os.path.join(output_directory, output_filename)
 
         with open(output_path, "w", encoding="utf-8") as file:
